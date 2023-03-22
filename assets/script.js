@@ -47,7 +47,7 @@ var callLocation = function (lat, lon, cityname) {
         .then(function (response) {
 
 
-            currentWeather(response, cityname);
+            LocalWeather(response, cityname);
 
 
             fiveDayForecast(response);
@@ -94,7 +94,7 @@ var saveSearch = function () {
             previousCities.appendChild(makeButton);
         }
     } else {
-        previousCities.innerHTML = "Your recent searches will show here!"
+        previousCities.innerHTML = "Recent Searches"
     }
 };
 
@@ -116,7 +116,7 @@ var loadStorage = function () {
       
         
     } else {
-        previousCities.innerHTML = "Your recent searches will show here!"
+        previousCities.innerHTML = "Recent Searches"
     }
 };
 
@@ -157,7 +157,6 @@ var fiveDayForecast = function (weather) {
   fiveDay.innerHTML = ''
 
   for (let i = 0; i < daily.length - 3; i++) {
-      //formating for the next five dates
       var dateHead = formatFuture(i);
       var weather = daily[i].weather[0].id;
       var temp = daily[i].temp.day;
@@ -206,14 +205,13 @@ var checkUVlight = function (uvlight, uvEl) {
   return uvEl
 };
 
-//setup for dates
+
 var date = new Date()
 var day = date.getDate()
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
 
 var formatTime = function () {
-  //formats date
   var currentDate = `(${month}/${day}/${year})`
   return currentDate;
 };
@@ -226,8 +224,7 @@ var formatFuture = function (i) {
 
 
 //Local Weather
-
-var currentWeather = function (weather, cityname) {
+var LocalWeather = function (weather, cityname) {
   var live = weather.current;
   var headEl = document.querySelector('#location');
   headEl.textContent = cityname + " " + formatTime();
