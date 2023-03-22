@@ -1,6 +1,6 @@
 //API
 
-var APIkey = "ef9baf2e9970042afd3e11166d07b434";
+var APIkey = "629a3c5d9bb017b7d5d0726e3e74cdbb";
 var part = 'alerts,minutely';
 
 
@@ -57,6 +57,20 @@ var callLocation = function (lat, lon, cityname) {
 
 document.querySelector('#city-search').addEventListener('submit', searchBar)   
 
+//Last Searched
+
+var btnVal = function (value) {
+  var btnValue = value.innerHTML;
+  fetchFunction(btnValue);
+};
+
+
+var buttonCreation = function (content) {
+  var currentCityBtn = document.createElement('button');
+  currentCityBtn.textContent = content;
+  currentCityBtn.onclick = function () { btnVal(this); };
+  return currentCityBtn
+};
 
 
 
@@ -181,20 +195,34 @@ var fiveDayForecast = function (weather) {
   };
 };
 
-//Last Searched
-
-var btnVal = function (value) {
-  var btnValue = value.innerHTML;
-  fetchFunction(btnValue);
+var checkUVlight = function (uvlight, uvEl) {
+  if (uvlight < 3) {
+      uvEl.setAttribute('class', 'bg-success')
+  } else if (3 < uvlight && uvlight < 6) {
+      uvEl.setAttribute('class', 'bg-warning')
+  } else {
+      uvEl.setAttribute('class', 'bg-danger')
+  }
+  return uvEl
 };
 
+//setup for dates
+var date = new Date()
+var day = date.getDate()
+var month = date.getMonth() + 1;
+var year = date.getFullYear();
 
-var buttonCreation = function (content) {
-  var currentCityBtn = document.createElement('button');
-  currentCityBtn.textContent = content;
-  currentCityBtn.onclick = function () { btnVal(this); };
-  return currentCityBtn
+var formatTime = function () {
+  //formats date
+  var currentDate = `(${month}/${day}/${year})`
+  return currentDate;
 };
+
+var formatFuture = function (i) {
+  var futureDay = day + i + 1
+  var futureDate = `(${month}/${futureDay}/${year})`
+  return futureDate;
+}
 
 
 //Local Weather
@@ -204,7 +232,6 @@ var currentWeather = function (weather, cityname) {
   var headEl = document.querySelector('#location');
   headEl.textContent = cityname + " " + formatTime();
 
-  // Weather variables
 
   var temperature = live.temp;
   var windy = live.wind_speed;
